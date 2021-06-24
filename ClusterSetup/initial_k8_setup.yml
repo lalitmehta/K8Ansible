@@ -1,0 +1,24 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: display date from each server
+    tags: always
+    command: uptime
+    register: out
+  - debug:
+      var: out.stdout_lines   
+
+  - name: install OS updates
+    tags: update
+    apt:
+      update_cache: true
+      upgrade: dist
+
+  - name: disable swap file
+    tags: swap
+    shell: swapoff -a
+
+      
